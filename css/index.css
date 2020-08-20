@@ -37,6 +37,7 @@ html {
     padding-top: 10px;
     border-radius: 15px;
     border: 3px solid #00004d;
+    overflow: hidden;
   }
 
 
@@ -47,8 +48,6 @@ html {
     padding: 20px;
   }
   
-
-
 
   button {
     height: 60px;
@@ -73,6 +72,10 @@ html {
 
   button:focus {
     outline: none;
+  }
+
+  #del {
+    font-size: medium;
   }
   
   .clear {
@@ -109,8 +112,8 @@ html {
     background-color:#0859C6;
     border: 3px solid #00004d;
     color:#e7eff6;
-    grid-column-start: 3;
-    grid-column-end: 5;
+    /* grid-column-start: 3;
+    grid-column-end: 5; */
     border-radius: 5px;
   }
   

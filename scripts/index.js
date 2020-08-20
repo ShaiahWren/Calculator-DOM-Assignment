@@ -22,11 +22,13 @@
 // Luke
 let numbers = document.querySelectorAll('.number');
 let operators = document.querySelectorAll('.operator');
-const clear = document.querySelector('#clear')
-const decimal = document.querySelector('#decimal')
+const clear = document.querySelector('#clear');
+const decimal = document.querySelector('#decimal');
+const percentage = document.querySelector('.percentage');
+let del = document.querySelector('#del');
 let inputArr = [];
 let displayCurrent = document.querySelector('.input');
-let displayPrevious = document.querySelector('.previous-number');
+// let displayPrevious = document.querySelector('.previous-number');
 
 numbers.forEach(function(number) {
     number.addEventListener('click', function(event) {
@@ -51,6 +53,7 @@ operators.forEach(function(operator) {
 clear.addEventListener('click', function (event) {
     event.preventDefault();
     displayCurrent.innerHTML = '';
+    inputArr = [];
 })
 
 decimal.addEventListener('click', function (event) {
@@ -59,19 +62,58 @@ decimal.addEventListener('click', function (event) {
     displayCurrent.innerHTML += decimal.innerHTML;
 })
 
+percentage.addEventListener('click', function (event) {
+    event.preventDefault();
+    percentResult = Number(displayCurrent.innerHTML)/100;
+    displayCurrent.innerHTML = percentResult;
+
+})
+
+del.addEventListener('click', function (event) {
+    event.preventDefault();
+    inputArr.pop()
+    remove = [,]
+    inputArr = inputArr.filter((element) => !remove.includes(element))
+    displayCurrent.innerHTML = inputArr.join('');
+})
+
+
 result.addEventListener('click', function() {
     console.log("The input array is currently", inputArr);
     let numbersStringHolder = "";
-    let equalFunctionArray = [];
+    let resultArr = [];
     for (let char of inputArr) {
         const numReg = /\d/;
         if (numReg.test(char) || char === '.') {
             numbersStringHolder += char;
         } else {
-            equalFunctionArray = [...equalFunctionArray, Number(numbersStringHolder), char]
+            resultArr = [...resultArr, Number(numbersStringHolder), char]
             numbersStringHolder = "";
         }
     }
-    equalFunctionArray = [...equalFunctionArray, Number(numbersStringHolder)];
-    console.log("This array inside equals", equalFunctionArray);
-})
+    resultArr = [...resultArr, Number(numbersStringHolder)];
+    
+    let add = resultArr.indexOf("+");
+    while (add !== -1) {
+        resultArr.splice(add-1, 3, resultArr[add-1] + resultArr[add+1]);
+        add = resultArr.indexOf("+");
+    }
+    let subtract = resultArr.indexOf("-");
+    while (subtract !== -1) {
+        resultArr.splice(subtract-1, 3, resultArr[subtract-1] - resultArr[subtract+1]);
+        subtract = resultArr.indexOf("-");
+    }
+    let multiply = resultArr.indexOf("x");
+    while (multiply !== -1) {
+        resultArr.splice(multiply-1, 3, resultArr[multiply-1] * resultArr[multiply+1]);
+        multiply = resultArr.indexOf("x");
+    }
+    let divide = resultArr.indexOf("÷");
+    while (divide !== -1) {
+        resultArr.splice(divide-1, 3, resultArr[divide-1] / resultArr[divide+1]);
+        divide = resultArr.indexOf("÷");
+    }
+    inputArr = [...resultArr]
+    displayCurrent.innerHTML = inputArr[0].toFixed(2);
+
+});
