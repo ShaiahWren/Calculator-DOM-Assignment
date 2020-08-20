@@ -28,23 +28,41 @@ const percentage = document.querySelector('.percentage');
 let del = document.querySelector('#del');
 let inputArr = [];
 let displayCurrent = document.querySelector('.input');
-// let displayPrevious = document.querySelector('.previous-number');
+let equalsPressed = false;
+let lastCharOperator = false;
+
 
 numbers.forEach(function(number) {
     number.addEventListener('click', function(event) {
+        if (equalsPressed === true) {
+            displayCurrent.innerHTML = '';
+            inputArr = [];
+            equalsPressed = false;
+        }
+        lastCharOperator = false;
         event.preventDefault();
         inputArr.push(number.innerHTML);
         console.log(inputArr)
         displayCurrent.innerHTML += number.innerHTML;
+        
     })
 })
 
 operators.forEach(function(operator) {
     operator.addEventListener('click', function(event) {
+        if (equalsPressed === true) {
+            displayCurrent.innerHTML = '';
+            inputArr = [];
+            equalsPressed = false;
+        }
+        if (! lastCharOperator) {
+            lastCharOperator = true; 
+        
         event.preventDefault();
         inputArr.push(operator.innerHTML);
         displayCurrent.innerHTML += operator.innerHTML;
         // console.log(inputArr);
+        }
        
     })
 })
@@ -115,5 +133,7 @@ result.addEventListener('click', function() {
     }
     inputArr = [...resultArr]
     displayCurrent.innerHTML = inputArr[0].toFixed(2);
+    equalsPressed = true;
+   
 
 });
